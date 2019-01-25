@@ -1,6 +1,11 @@
 import React from 'react'
 
-const Platillo = ({name, calories,image, quantity, agregar,onChange})=>{
+let quantity
+function onChange(e) {
+  quantity = e.target.value;
+}
+
+const Platillo = ({name,price,image, agregar,index})=>{
     
     
     return(
@@ -15,7 +20,7 @@ const Platillo = ({name, calories,image, quantity, agregar,onChange})=>{
             <div className="content">
               <p>
                 <strong>{name}</strong> <br />
-                <small>{calories}</small>
+                <small>${price}</small>
               </p>
             </div>
           </div>
@@ -27,11 +32,12 @@ const Platillo = ({name, calories,image, quantity, agregar,onChange})=>{
                   type="number" 
                   onChange={onChange}
                   name="quantity"
+                  placeholder="1"
                   
                 />
               </div>
               <div className="control">
-                <button onClick={agregar} className="button is-info">
+                <button onClick={() => agregar(name,price,quantity,index)} className="button is-info">
                   +
                 </button>
               </div>

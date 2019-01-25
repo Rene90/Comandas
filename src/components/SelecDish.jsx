@@ -5,7 +5,7 @@ const Seleccionado = ({name, price,image,quantity,mult})=>{
     
     return(
         <li>
-        {quantity},{name}= {mult}
+        {quantity},{name}= {price}
         
       </li>
 
