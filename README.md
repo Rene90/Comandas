@@ -1,4 +1,7 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## npm install
+Correr npm install antes de correr aplicación
+Se uso Bulma para dar estilos a los componentes, se instaló con npm install bulma
 
 ## Available Scripts
 

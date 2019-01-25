@@ -21,7 +21,7 @@ const Forma = ({ onChange, handleSubmit})=>{
             </div>
             
             <div className="control">
-                <button class="button is-link" type="submit">Submit</button>
+                <button class="button is-link space" type="submit">Submit</button>
             </div>
 
         </div>

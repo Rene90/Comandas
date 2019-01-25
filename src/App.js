@@ -15,7 +15,8 @@ class App extends Component {
     items:[],
     comanda:[],
     liscomanda:[],
-    total:0
+    total:0,
+    nombre:"",
 }
 toggleForm = () =>{
     let {showForm} = this.state;
@@ -57,28 +58,37 @@ this.setState({items: updatedList});
 
 }
 agregar = (name,price,quantity,index)=>{//agregar platillo a la comanda
-    
-    let lista = this.state.comanda;
+    if(!quantity) quantity = 0
+    let comanda = this.state.comanda;
     let total = this.state.total;    
     //buscamos en la lista de la comanda el platillo seleccionado
-    const plat = lista.find(element => element.name === name );
-    if(plat) lista.splice(lista.indexOf(plat),1);   
+    const plat = comanda.find(element => element.name === name );
+    if(plat) comanda.splice(comanda.indexOf(plat),1);   
     let multiplicacion = quantity * price   
     const s = {
       name,
       price: multiplicacion ,
       quantity
     };
-    lista.push(s)
-    total = lista.reduce((acc,item)=> acc + item.price,0);    
+    comanda.push(s)
+    total = comanda.reduce((acc,item)=> acc + item.price,0);    
     this.setState({
-        lista,
+        comanda,
         total
     })
   }
-agrecom = () =>{
-  let{liscomanda, comanda, total} = this.state;
-  liscomanda.push(comanda)
+agrecom = () =>{//agrega comanda a lista de comandas
+  let{liscomanda, comanda, total, nombre} = this.state;
+  
+  const com = liscomanda.find(element => element.nombre === nombre );
+    if(com) liscomanda.splice(liscomanda.indexOf(com),1); 
+  let nom= comanda[0]+String(total+ Math.random())
+  const s = {
+    nombre:nom,
+    nombrep: String(total),
+    comanda: comanda
+  }
+  liscomanda.push(s)
   comanda = []
   total = 0
   this.setState({
@@ -100,6 +110,26 @@ delete = name =>{
     
 })
 }
+deletecom = key =>{//borra comanda de lista de comandas
+  let{liscomanda} = this.state
+  liscomanda.splice(key,1)
+  this.setState({
+    liscomanda
+  })
+}
+vercom = key =>{//ver comanda
+  let{liscomanda, comanda, total, nombre} = this.state
+  comanda = liscomanda[key].comanda
+  nombre = liscomanda[key].nombre
+  total = 0
+  total = comanda.reduce((acc,item)=> acc + item.price,0);
+  this.setState({
+    comanda,
+    total,
+    nombre
+  })
+
+}
 
 componentWillMount= function(){
     this.setState({items: this.state.comida})
@@ -110,9 +140,9 @@ componentWillMount= function(){
     return (
       <div id ="root">
         <div className="container">
-        <h1 className="title"> Comandas Common Sense</h1>
+        <h1 className="title"> Comandas Common Sense (René Manzano)</h1>
         <div className="container">
-        <button className="button is-link is-rounded" onClick={this.toggleForm}>{showForm ? "Cancelar" : "Agrega un platillo al menu"}</button>
+        <button className="button is-link is-rounded space" onClick={this.toggleForm}>{showForm ? "Cancelar" : "Agrega un platillo al menu"}</button>
         
         {showForm && <Forma onChange={this.onChange} handleSubmit = {this.handleSubmit}/>}
         </div>
@@ -121,7 +151,7 @@ componentWillMount= function(){
         </div>
         <div className="columns">
           <div className="column">
-          {items.map((items,index)=><Platillo index={index} {...items} agregar={this.agregar}/>)}
+          {items.map((items,index)=><Platillo key={index} {...items} agregar={this.agregar}/>)}
           </div>
           <div className="column content">
               <h2 className="subtitle">Comanda</h2>
@@ -139,7 +169,12 @@ componentWillMount= function(){
             <ul>
               {liscomanda.map((items, key)=> {
                 return(
-                  <li>Comanda # {key}</li>
+                  <li><p>Comanda # {key} Total: ${items.nombrep}</p>
+                      <div>
+                        <button className="button is-success is-rounded" onClick={()=> this.vercom(key)}>Ver</button>
+                        <button className="button is-danger is-rounded" onClick={()=> this.deletecom(key)}>X</button>
+                      </div>
+                  </li>
                 )
               })}
             </ul>

@@ -1,6 +1,6 @@
 import React from 'react'
 
-let quantity
+let quantity 
 function onChange(e) {
   quantity = e.target.value;
 }
@@ -32,12 +32,17 @@ const Platillo = ({name,price,image, agregar,index})=>{
                   type="number" 
                   onChange={onChange}
                   name="quantity"
-                  placeholder="1"
+                  placeholder="0"
+                  min="0"
                   
                 />
               </div>
               <div className="control">
-                <button onClick={() => agregar(name,price,quantity,index)} className="button is-info">
+                <button onClick={() => {
+                  agregar(name,price,quantity,index)
+                  quantity = 0
+                
+                }} on className="button is-info">
                   +
                 </button>
               </div>
